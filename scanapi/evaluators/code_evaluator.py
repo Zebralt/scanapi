@@ -8,6 +8,7 @@ import time
 import uuid
 
 from scanapi.errors import InvalidPythonCodeError
+from scanapi import sandbox
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +48,7 @@ class CodeEvaluator:
         :rtype: (boolean, string)
         """
         try:
-            assert eval(code)
+            assert sandbox.eval(code, {'response': response})
             return (True, None)
         except AssertionError:
             return (False, code.strip())
@@ -58,5 +59,5 @@ class CodeEvaluator:
         from scanapi.evaluators.string_evaluator import StringEvaluator
 
         return StringEvaluator.replace_var_with_value(
-            sequence, match.group(), str(eval(code))
+            sequence, match.group(), str(sandbox.eval(code, {'response': response}))
         )
