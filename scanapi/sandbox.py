@@ -16,66 +16,35 @@ trusted environment using RestrictedPython[1].
 > RestrictedPython is not a sandbox system or a secured environment, but it helps
 > to define a trusted environment and execute untrusted code inside of it.
 
-Allowed language features:
-* builtins
-
-    # constructs
-    set
-    frozenset
-    list
-    tuple
-    range
-
-    # iter operations
-    sorted
-    slice
-    zip
-    sum
-    Counter
-    
-    # special
-    id
-    __build_class__
-
-    # type check
-    issubclass
-    isinstance
-    callable
-    same_type
-
-    # type conversion and dunder methods
-    float
-    int
-    str
-    bytes
-    bool
-    abs
-    len
-    pow
-    chr
-    oct
-    divmod
-    hash
-    repr
-    ord
-    round
-    hex
-    complex
-
-* libraries
-    string
-    math
-    random
-    whrandom
-    test
-    itertools
-* consts
-    True
-    None
-    False
-
 1: https://restrictedpython.readthedocs.io/en/latest/
 """
+
+
+# Enforce allowed features statically
+_allowed_builtins = {
+    # constructs
+    'set', 'frozenset', 'list', 'tuple', 'range',
+    # iter operations
+    'sorted', 'slice', 'zip', 'sum',
+    # special
+    'id', '__build_class__', 
+    # type check
+    'issubclass', 'isinstance', 'callable', 'same_type',
+    # types & dunder methods
+    'float', 'int', 'str', 'bytes', 'bool', 'abs', 'len', 'pow', 'chr',
+    'oct', 'divmod', 'hash', 'repr', 'ord', 'round', 'hex', 'complex', 
+    # whitelisted libraries
+    'string', 'math', 'random', 'whrandom', 'test',
+    # literals
+    'True', 'None', 'False',
+    # RestrictedPython-related
+    'reorder'
+}
+
+_allowed_globals = {
+    '__builtins__', '_getitem_', '_getattr_', '_getiter_',
+    'Counter', 'itertools'
+}
 
 
 # We don't need the user to be able to raise exceptions and those are included in
@@ -94,7 +63,7 @@ safe_builtins = {
 _sentinel = object()
 
 
-#https://github.com/zopefoundation/RestrictedPython/blob/master/src/RestrictedPython/Guards.py#L260
+# https://github.com/zopefoundation/RestrictedPython/blob/master/src/RestrictedPython/Guards.py#L260
 def _getattr_(obj, name: str) -> Any:
     """Disable safer_getattr behavior of always returning a default value."""
     value = Guards.safer_getattr(obj, name, _sentinel)
@@ -103,7 +72,8 @@ def _getattr_(obj, name: str) -> Any:
     return value
 
 
-# more guards in https://github.com/zopefoundation/AccessControl/blob/master/src/AccessControl/ZopeGuards.py
+# more guards at
+# https://github.com/zopefoundation/AccessControl/blob/master/src/AccessControl/ZopeGuards.py
 restricted_globals = {
     '__builtins__': {
         **utility_builtins,

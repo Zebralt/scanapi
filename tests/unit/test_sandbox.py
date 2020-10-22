@@ -1,4 +1,7 @@
-from scanapi.sandbox import eval as sb_eval
+from scanapi.sandbox import (
+    eval as sb_eval, restricted_globals,
+    _allowed_builtins, _allowed_globals
+)
 
 import pytest
 from unittest.mock import Mock
@@ -153,6 +156,12 @@ def test_forbidden_builtins():
     assert str(excinfo.value) == "name 'exit' is not defined"
     with pytest.raises(NameError) as excinfo: sb_eval('exit()')
     assert str(excinfo.value) == "name 'exit' is not defined"
+
+
+def test_allowed_globals():
+
+    assert sorted(set(_allowed_globals)) == sorted(restricted_globals.keys())
+    assert sorted(set(_allowed_builtins)) == sorted(restricted_globals['__builtins__'].keys())
 
 
 def test_getiter():
