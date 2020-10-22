@@ -25,7 +25,7 @@ _allowed_builtins = {
     # constructs
     'set', 'frozenset', 'list', 'tuple', 'range',
     # iter operations
-    'sorted', 'slice', 'zip', 'sum',
+    'sorted', 'slice', 'zip', 'sum', 'any', 'all',
     # special
     'id', '__build_class__',
     # type check
