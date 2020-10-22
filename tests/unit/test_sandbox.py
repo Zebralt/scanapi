@@ -164,6 +164,21 @@ def test_allowed_globals():
     assert sorted(set(_allowed_builtins)) == sorted(restricted_globals['__builtins__'].keys())
 
 
+def test_temper():
+
+    assert sb_eval('abs(2)') == 2
+
+    with pytest.raises(RuntimeError) as excinfo:
+        restricted_globals['exit'] = exit
+        sb_eval('exit()')
+    restricted_globals.pop('exit')
+
+    # You can always do this though
+    # but the code should be expected to run in a trusted environment anyway
+    # restricted_globals['__builtins__']['abs'] = exit
+    # sb_eval('abs(2)')
+
+
 def test_getiter():
     # list comprehensions
 

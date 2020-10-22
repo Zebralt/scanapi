@@ -27,12 +27,12 @@ _allowed_builtins = {
     # iter operations
     'sorted', 'slice', 'zip', 'sum',
     # special
-    'id', '__build_class__', 
+    'id', '__build_class__',
     # type check
     'issubclass', 'isinstance', 'callable', 'same_type',
     # types & dunder methods
     'float', 'int', 'str', 'bytes', 'bool', 'abs', 'len', 'pow', 'chr',
-    'oct', 'divmod', 'hash', 'repr', 'ord', 'round', 'hex', 'complex', 
+    'oct', 'divmod', 'hash', 'repr', 'ord', 'round', 'hex', 'complex',
     # whitelisted libraries
     'string', 'math', 'random', 'whrandom', 'test',
     # literals
@@ -90,8 +90,19 @@ restricted_globals = {
 }
 
 
+def validate(globals):
+    diffs = (
+        restricted_globals.keys() - _allowed_globals,
+        restricted_globals['__builtins__'].keys() - _allowed_builtins
+    )
+    if any(diffs):
+        raise RuntimeError("Restricted globals were tempered with: %s" % str(diffs))
+
+
 def eval(code: str, ctx: Dict[str, Any] = {}) -> Any:
     """Evaluate code in a trusted environment."""
+
+    validate(restricted_globals)
 
     globals_ = dict(restricted_globals)
     globals_.update(ctx)
