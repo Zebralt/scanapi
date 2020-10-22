@@ -52,7 +52,7 @@ _allowed_globals = {
 # https://github.com/zopefoundation/RestrictedPython/blob/master/src/RestrictedPython/Guards.py#L30
 _safe_names = {
     *Guards._safe_names,
-    'sum'
+    'sum', 'any', 'all'
 }
 
 safe_builtins = {
