@@ -6,11 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+<<<<<<< HEAD
 ### Added
 - Add `--no-report` flag. [#299](https://github.com/scanapi/scanapi/pull/299)
 
 ### Changed
 - Updated poetry-publish version to v1.3 [#311](https://github.com/scanapi/scanapi/pull/311)
+=======
+### Changed
+- Updated poetry-publish version to v1.3 [#311](https://github.com/scanapi/scanapi/pull/311)
+
+### Fixed
+- Removed all flake8 errors [#309](https://github.com/scanapi/scanapi/pull/309)
+>>>>>>> eb18b156b9a1dfa4a29d0206b1c9998b46e95b43
 
 ## [2.1.0] - 2020-10-06
 ### Added

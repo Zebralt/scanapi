@@ -40,8 +40,12 @@ class TestScan:
     class TestWhenCouldNotFindAPISpecFile:
         def test_should_log_error(self, mocker, caplog):
             mocker.patch(
+<<<<<<< HEAD
                 "scanapi.scan.settings",
                 {"spec_path": "invalid_path/scanapi.yaml", "no_report": False},
+=======
+                "scanapi.scan.settings", {"spec_path": "invalid_path/scanapi.yaml"}
+>>>>>>> eb18b156b9a1dfa4a29d0206b1c9998b46e95b43
             )
             mocker.patch("scanapi.scan.load_config_file", side_effect=file_not_found)
             with caplog.at_level(logging.ERROR):
@@ -143,7 +147,7 @@ class TestWriteReporter:
         mock_write = mocker.patch("scanapi.scan.Reporter.write")
         mock_reporter_init = mocker.patch("scanapi.scan.Reporter.__init__")
         mock_reporter_init.return_value = None
-        mock_settings = mocker.patch(
+        mocker.patch(
             "scanapi.scan.settings",
             {
                 "output_path": "out/my-report.md",
